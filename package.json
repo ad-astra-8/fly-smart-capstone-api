@@ -1,7 +1,7 @@
 {
   "name": "fly-smart-capstone-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "The app helps travelers getting more organized and alert for their upcoming trips.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
@@ -11,7 +11,10 @@
     "deploy": "git push heroku master"
   },
   "keywords": [],
-  "author": "",
+  "engines": {
+    "node": "12.16.2"
+  },
+  "author": "wa",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
