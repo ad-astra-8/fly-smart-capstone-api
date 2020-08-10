@@ -100,8 +100,9 @@ The app's functionality includes:
             * __Navbar.js__ (stateless) - 
         * __Checklist.js__ (stateful) - 
             * __Navbar.js__ (stateless) - 
-        * __MyList.js__ (stateful) - 
+        * __MyListForm.js__ (stateful) - 
             * __Navbar.js__ (stateless) - 
+            * __MyList.js__ (stateful) - 
 
 ## Technology
 * Front-End: HTML5, CSS3, JavaScript ES6, React

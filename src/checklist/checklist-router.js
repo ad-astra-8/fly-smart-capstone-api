@@ -9,7 +9,7 @@ const jsonParser = express.json()
 
 const serializeChecklist = checklist => ({
   id: checklist.id,
-  title: xss(checklist.title),
+  item: xss(checklist.item),
   completed: checklist.completed
 })
 
@@ -25,8 +25,8 @@ checklistRouter
 })
 
 .post(jsonParser, (req, res, next)=>{
-  const {title, completed= false} = req.body
-  const newChecklist = {title}
+  const {item, completed= false} = req.body
+  const newChecklist = {item}
   for (const [key, value] of Object.entries(newChecklist))
   if (value == null)
   return res.status(400).json({
@@ -84,14 +84,14 @@ checklistRouter
       .catch(next)
   })
   .patch(jsonParser, (req, res, next) => {
-    const { title, completed } = req.body
-    const checklistToUpdate = { title, completed }
+    const { item, completed } = req.body
+    const checklistToUpdate = { item, completed }
 
     const numberOfValues = Object.values(checklistToUpdate).filter(Boolean).length
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must content either 'title' or 'completed'`
+          message: `Request body must content either 'item' or 'completed'`
         }
       })
 

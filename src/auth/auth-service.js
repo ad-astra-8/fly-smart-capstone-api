@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 const AuthService = {
-    getUserWithUserName(db, userName) {
-        console.log('authServivce:', userName)
+    getUserWithUserName(db, email) {
+        console.log('authServivce:', email)
         return db('users')
-            .where( 'email', userName )
+            .where( 'email', email )
             .first()
     },
     comparePasswords(password, hash) {

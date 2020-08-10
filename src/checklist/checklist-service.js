@@ -2,20 +2,12 @@ const ChecklistService = {
     getChecklists(db) {
       return db
         .from('checklist')
-        .select(
-          'checklist.id',
-          'checklist.title',
-          'checklist.completed',
-        )
+        .select("*")
     },
     getChecklistById(db, checklist_id) {
       return db
         .from('checklist')
-        .select(
-          'checklist.id',
-          'checklist.title',
-          'checklist.completed',
-        )
+        .select("*")
         .where('checklist.id', checklist_id)
         .first()
     },

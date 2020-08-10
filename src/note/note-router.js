@@ -9,7 +9,7 @@ const jsonParser = express.json()
 
 const serializeNote = note => ({
   id: note.id,
-  title: xss(note.title),
+  note: xss(note.note),
   completed: note.completed
 })
 
@@ -25,8 +25,8 @@ noteRouter
 })
 
 .post(jsonParser, (req, res, next)=>{
-  const {title, completed= false} = req.body
-  const newNote = {title}
+  const {user_id, note, completed = false} = req.body
+  const newNote = {user_id, note, completed}
   for (const [key, value] of Object.entries(newNote))
   if (value == null)
   return res.status(400).json({
@@ -84,14 +84,14 @@ noteRouter
       .catch(next)
   })
   .patch(jsonParser, (req, res, next) => {
-    const { title, completed } = req.body
-    const noteToUpdate = { title, completed }
+    const { note, completed } = req.body
+    const noteToUpdate = { note, completed }
 
     const numberOfValues = Object.values(noteToUpdate).filter(Boolean).length
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must content either 'title' or 'completed'`
+          message: `Request body must content either 'note' or 'completed'`
         }
       })
 
