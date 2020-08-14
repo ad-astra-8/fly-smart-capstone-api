@@ -25,8 +25,11 @@ noteRouter
 })
 
 .post(jsonParser, (req, res, next)=>{
-  const {user_id, note, completed = false} = req.body
-  const newNote = {user_id, note, completed}
+  // const {user_id, note, completed = false} = req.body
+  // const newNote = {user_id, note, completed}
+  const { note, completed = false} = req.body
+  const newNote = { note, completed }
+
   for (const [key, value] of Object.entries(newNote))
   if (value == null)
   return res.status(400).json({
@@ -42,22 +45,22 @@ noteRouter
   .then(note=>{
     res
     .status(201)
-    .location(path.posix.join(req.originalUrl, `/${note.id}`))
+    .location(path.posix.join(req.originalUrl, `/my-list`))
     .json(serializeNote(note))
   })
   .catch(next)
 })
 noteRouter
-  .route('/:note_id')
+  .route('/:id')
   .all((req, res, next) => {
-    if (isNaN(parseInt(req.params.note_id))) {
+    if (isNaN(parseInt(req.params.id))) {
       return res.status(404).json({
         error: { message: `Invalid id` }
       })
     }
     NoteService.getNoteById(
       req.app.get('db'),
-      req.params.note_id
+      req.params.id
     )
       .then(note => {
         if (!note) {
@@ -76,7 +79,7 @@ noteRouter
   .delete((req, res, next) => {
     NoteService.deleteNote(
       req.app.get('db'),
-      req.params.note_id
+      req.params.id
     )
       .then(numRowsAffected => {
         res.status(204).end()
@@ -97,7 +100,7 @@ noteRouter
 
     NoteService.updateNote(
       req.app.get('db'),
-      req.params.note_id,
+      req.params.id,
       noteToUpdate
     )
       .then(updatedNote => {
