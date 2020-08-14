@@ -20,9 +20,9 @@ const NoteService = {
           return rows[0]
         })
     },
-    deleteNote(db, note_id) {
+    deleteNote(db, id) {
       return db('notes')
-        .where({'id': note_id})
+        .where({'id': id})
         .delete()
     },
     updateNote(db, note_id, newNote) {
