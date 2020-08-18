@@ -9,7 +9,7 @@ CREATE TABLE checklist (
   user_id INTEGER
         REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   item VARCHAR (255) NOT NULL,
-  completed BOOLEAN DEFAULT FALSE
+  completed INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE notes (
@@ -17,5 +17,5 @@ CREATE TABLE notes (
   -- user_id INTEGER
   --       REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   note VARCHAR (255) NOT NULL,
-  completed BOOLEAN DEFAULT FALSE
+  completed INTEGER NOT NULL DEFAULT 0
 );

@@ -7,10 +7,10 @@ const { response } = require('express')
 const checklistRouter = express.Router()
 const jsonParser = express.json()
 
-const serializeChecklist = checklist => ({
-  id: checklist.id,
-  item: xss(checklist.item),
-  completed: checklist.completed
+const serializeChecklist = item => ({
+  id: item.id,
+  item: xss(item.item),
+  completed: item.completed
 })
 
 checklistRouter
@@ -18,14 +18,14 @@ checklistRouter
 .get((req, res, next)=>{
   const KnexInstance = req.app.get('db')
   ChecklistService.getChecklists(KnexInstance)
-  .then(checklists=>{
-    res.json(checklists.map(serializeChecklist))
+  .then(checklist=>{
+    res.json(checklist.map(serializeChecklist))
   })
   .catch(next)
 })
 
 .post(jsonParser, (req, res, next)=>{
-  const {item, completed= false} = req.body
+  const {item, completed = false} = req.body
   const newChecklist = {item}
   for (const [key, value] of Object.entries(newChecklist))
   if (value == null)
@@ -42,27 +42,27 @@ checklistRouter
   .then(checklist=>{
     res
     .status(201)
-    .location(path.posix.join(req.originalUrl, `/${checklist.id}`))
+    .location(path.posix.join(req.originalUrl, `/${item_id}`))
     .json(serializeChecklist(checklist))
   })
   .catch(next)
 })
 checklistRouter
-  .route('/:checklist_id')
+  .route('/:item_id')
   .all((req, res, next) => {
-    if (isNaN(parseInt(req.params.checklist_id))) {
+    if (isNaN(parseInt(req.params.item_id))) {
       return res.status(404).json({
-        error: { message: `Invalid id` }
+        error: { message: `Invalid id, ${req.params.item_id}` }
       })
     }
     ChecklistService.getChecklistById(
       req.app.get('db'),
-      req.params.checklist_id
+      req.params.item_id
     )
       .then(checklist => {
         if (!checklist) {
           return res.status(404).json({
-            error: { message: `Checklist doesn't exist` }
+            error: { message: `Item doesn't exist` }
           })
         }
         res.checklist = checklist
@@ -84,8 +84,8 @@ checklistRouter
       .catch(next)
   })
   .patch(jsonParser, (req, res, next) => {
-    const { item, completed } = req.body
-    const checklistToUpdate = { item, completed }
+    const { id, item, completed } = req.body
+    const checklistToUpdate = { id, item, completed }
 
     const numberOfValues = Object.values(checklistToUpdate).filter(Boolean).length
     if (numberOfValues === 0)
@@ -97,7 +97,7 @@ checklistRouter
 
     ChecklistService.updateChecklist(
       req.app.get('db'),
-      req.params.checklist_id,
+      req.params.item_id,
       checklistToUpdate
     )
       .then(updatedChecklist => {

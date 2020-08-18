@@ -4,11 +4,11 @@ const ChecklistService = {
         .from('checklist')
         .select("*")
     },
-    getChecklistById(db, checklist_id) {
+    getChecklistById(db, item_id) {
       return db
         .from('checklist')
         .select("*")
-        .where('checklist.id', checklist_id)
+        .where('checklist.id', item_id)
         .first()
     },
     insertChecklist(db, newChecklist) {
@@ -20,14 +20,14 @@ const ChecklistService = {
           return rows[0]
         })
     },
-    deleteChecklist(db, checklist_id) {
+    deleteChecklist(db, item_id) {
       return db('checklist')
-        .where({'id': checklist_id})
+        .where({'id': item_id})
         .delete()
     },
-    updateChecklist(db, checklist_id, newChecklist) {
+    updateChecklist(db, item_id, newChecklist) {
       return db('checklist')
-        .where({id: checklist_id})
+        .where({id: item_id})
         .update(newChecklist, returning=true)
         .returning('*')
     }
