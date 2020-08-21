@@ -51,12 +51,24 @@ noteRouter
     )
 
       .then(note => {
+        // res
+        //   .status(201)
+        //   .location(path.posix.join(req.originalUrl, `/${note_id}`))
+        //   .json(serializeNote(note))
+        const notePath = path.posix.join(req.originalUrl, `/${note.id}`);
+        const serializedNote = serializeNote(note);
+        console.log(notePath);
+        console.log(JSON.stringify(serializedNote));
+
         res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${note_id}`))
-          .json(serializeNote(note))
+        .status(201)
+        .location(notePath)
+        .json(serializedNote)
       })
-      .catch(next)
+      .catch(error => {
+    console.log(error);
+    next(error);
+})
   })
 
 //routes by id
