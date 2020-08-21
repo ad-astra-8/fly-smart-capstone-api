@@ -25,9 +25,7 @@ noteRouter
 })
 
 .post(jsonParser, (req, res, next)=>{
-  // const {user_id, note, completed = false} = req.body
-  // const newNote = {user_id, note, completed}
-  const { note, completed = false} = req.body
+  const { note, completed = 0 } = req.body
   const newNote = { note, completed }
 
   for (const [key, value] of Object.entries(newNote))
@@ -45,24 +43,26 @@ noteRouter
   .then(note=>{
     res
     .status(201)
-    .location(path.posix.join(req.originalUrl, `/${note.id}`))
+    .location(path.posix.join(req.originalUrl, `/${note_id}`))
     .json(serializeNote(note))
   })
   .catch(next)
 })
 noteRouter
-  .route('/:id')
+  .route('/:note_id')
   .all((req, res, next) => {
-    if (isNaN(parseInt(req.params.id))) {
+    if (isNaN(parseInt(req.params.note_id))) {
       return res.status(404).json({
-        error: { message: `Invalid id` }
+        error: { message: `Invalid id ${req.params.note_id}` }
       })
     }
+    console.log("BEFORE GET NOTE BY ID");
     NoteService.getNoteById(
       req.app.get('db'),
-      req.params.id
+      req.params.note_id
     )
       .then(note => {
+        console.log("NOTE FOUND");
         if (!note) {
           return res.status(404).json({
             error: { message: `Note doesn't exist` }
@@ -71,15 +71,18 @@ noteRouter
         res.note = note
         next()
       })
-      .catch(next)
+      .catch(err => console.log(err))
   })
   .get((req, res, next) => {
     res.json(serializeNote(res.note))
   })
   .delete((req, res, next) => {
+    console.log("DEMO");
+    console.log(req.params.note_id);
     NoteService.deleteNote(
+
       req.app.get('db'),
-      req.params.id
+      req.params.note_id
     )
       .then(numRowsAffected => {
         res.status(204).end()

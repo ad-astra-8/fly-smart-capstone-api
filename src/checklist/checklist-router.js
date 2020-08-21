@@ -76,7 +76,7 @@ checklistRouter
   .delete((req, res, next) => {
     ChecklistService.deleteChecklist(
       req.app.get('db'),
-      req.params.checklist_id
+      req.params.item_id
     )
       .then(numRowsAffected => {
         res.status(204).end()
@@ -88,7 +88,7 @@ checklistRouter
     const checklistToUpdate = { id, item, completed }
 
     const numberOfValues = Object.values(checklistToUpdate).filter(Boolean).length
-    if (numberOfValues === 0)
+    if (numberOfValues == 0)
       return res.status(400).json({
         error: {
           message: `Request body must content either 'item' or 'completed'`
