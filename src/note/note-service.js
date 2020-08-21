@@ -8,7 +8,7 @@ const NoteService = {
       return db
         .from('notes')
         .select("*")
-        .where({'id': note_id})
+        .where({'id': note.note_id})
         .first()
     },
     insertNote(db, newNote) {
