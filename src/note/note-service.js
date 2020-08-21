@@ -1,5 +1,5 @@
 const NoteService = {
-    getNotes(db, note_id) {
+    getNotes(db) {
       return db
         .from('notes')
         .select("*")
