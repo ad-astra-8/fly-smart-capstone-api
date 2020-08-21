@@ -1,5 +1,5 @@
 const NoteService = {
-    getNotes(db, note_id) {
+  getNotes(db) {
       return db
         .from('notes')
         .select("*")
@@ -27,7 +27,7 @@ const NoteService = {
     },
     updateNote(db, note_id, newNote) {
       return db('notes')
-        .where({id: note_id})
+        .where({'id': note_id})
         .update(newNote, returning=true)
         .returning('*')
     }
