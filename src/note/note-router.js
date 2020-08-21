@@ -53,7 +53,7 @@ noteRouter
       .then(note => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${note.note_id}`))
+          .location(path.posix.join(req.originalUrl, `/${note_id}`))
           .json(serializeNote(note))
       })
       .catch(next)
@@ -93,8 +93,8 @@ noteRouter
   })
   //delete note by id
   .delete((req, res, next) => {
-    // console.log("DEMO");
-    // console.log(req.params.note_id);
+    console.log("DEMO");
+    console.log(req.params.note_id);
     NoteService.deleteNote(
       req.app.get('db'),
       req.params.note_id
