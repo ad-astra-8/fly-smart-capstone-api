@@ -2,9 +2,7 @@
 
 The app helps travelers getting more organized and alert for their upcoming trips. 
 It provides users with safety guidelines related to COVID 19 pandemic.
-Logged in users can check if they have everything they need before their flight by checking boxes of lists (initially provided) of mostly recommended items.
-Users are able to identify which category they belong to and follow related guidelines: example:
-"traveling with babies" - "elderly people" - "groups and families".
+Logged in users can check if they have everything they need before their flight by checking boxes of lists (initially provided) of mostly recommended items and packing tips.
 Also, according to their needs, users can create new entries and annex them to the list initially provided.
 Users also have access to airport maps for eventual connections or just to spot airport amenities.
 It’s user-friendly, and accessible to everyone.
@@ -100,9 +98,9 @@ The app's functionality includes:
             * __Navbar.js__ (stateless) - 
         * __Checklist.js__ (stateful) - 
             * __Navbar.js__ (stateless) - 
-        * __MyListForm.js__ (stateful) - 
+        * __MyNoteForm.js__ (stateful) - 
             * __Navbar.js__ (stateless) - 
-            * __MyList.js__ (stateful) - 
+            * __MyNote.js__ (stateful) - 
 
 ## Technology
 * Front-End: HTML5, CSS3, JavaScript ES6, React
