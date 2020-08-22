@@ -10,7 +10,7 @@ Users also have access to airport maps for eventual connections or just to spot 
 It’s user-friendly, and accessible to everyone.
 
 ## Working Prototype
-You can access a working prototype of the node app here: https://fly-smart-api.herokuapp.com/ and react app 
+You can access a working prototype of the react app here: https://fly-smart-capstone-client.vercel.app/ 
 
 ## User Stories
 This app is for logged-in user.
@@ -64,7 +64,7 @@ Full website graybox wireframes
 ## Screenshot
 Full Page Screenshot 
 :-------------------------:
-![Landing Page](/github-images/screenshots/homepage.png) MODIFY PLEASE
+![Landing Page](/github-images/screenshots/landing-page.png)
 
 ## Functionality
 The app's functionality includes:
