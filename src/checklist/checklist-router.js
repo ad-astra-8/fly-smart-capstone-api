@@ -88,7 +88,7 @@ checklistRouter
     const checklistToUpdate = { id, item, completed }
     console.log(completed);
     // const numberOfValues = Object.values(checklistToUpdate).filter(Boolean).length
-    if (!completed || !item)
+    if (completed === undefined && item === undefined)
       return res.status(400).json({
         error: {
           message: `Request body must contain either 'item' or 'completed'`
