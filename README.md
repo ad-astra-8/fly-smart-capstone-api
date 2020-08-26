@@ -62,7 +62,7 @@ Full website graybox wireframes
 ## Screenshot
 Full Page Screenshot 
 :-------------------------:
-![Landing Page](/github-images/screenshots/vacations-list.jpg)
+![Landing Page](/github-images/screenshots/landing-page.png)
 
 ## Functionality
 The app's functionality includes:
