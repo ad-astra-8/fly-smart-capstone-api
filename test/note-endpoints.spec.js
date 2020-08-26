@@ -60,6 +60,7 @@ describe('fly-smart-capstone API - notes', function () {
 			});
 
 
+
 			context(`Given an XSS attack note`, () => {
 				const testFolder = makeFolderArray();
 				const { maliciousNote, expectedNote } = makeMaliciousNote();
@@ -87,6 +88,46 @@ describe('fly-smart-capstone API - notes', function () {
 
 
 		});
+
+		describe(`DELETE /api/notes/:note_id`, () => {
+			context(`Given no notes`, () => {
+			  it(`responds with 404`, () => {
+				const noteId = 123456
+				return supertest(app)
+				  .delete(`/api/notes/${note.id}`)
+				  .expect(404, { error: { message: `Article doesn't exist` } })
+			  })
+			})
+		
+			context('Given there are notes in the database', () => {
+				const testUsers = makeUsersArray();
+				const testNotes = makeNotesArray()
+		
+			  beforeEach('insert notes', () => {
+				return db
+				  .into('notes')
+				  .insert(testUsers)
+				  .then(() => {
+					return db
+					  .into('notes')
+					  .insert(testNotes)
+				  })
+			  })
+		
+			  it('responds with 204 and removes the note', () => {
+				const idToRemove = 2
+				const expectedNotes = testNotes.filter(note => note.id !== idToRemove)
+				return supertest(app)
+				  .delete(`/api/notes/${idToRemove}`)
+				  .expect(204)
+				  .then(res =>
+					supertest(app)
+					  .get(`/api/notes`)
+					  .expect(expectedNotes)
+				  )
+			  })
+			})
+		  })
 
 	});
 });

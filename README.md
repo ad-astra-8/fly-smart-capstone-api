@@ -1,4 +1,4 @@
-# Fly-Smart-capstone-client
+# Fly-Smart-Api
 
 The app helps travelers getting more organized and alert for their upcoming trips. 
 It provides users with safety guidelines related to COVID 19 pandemic.
@@ -62,7 +62,7 @@ Full website graybox wireframes
 ## Screenshot
 Full Page Screenshot 
 :-------------------------:
-![Landing Page](/github-images/screenshots/landing-page.png)
+![Landing Page](/github-images/screenshots/vacations-list.jpg)
 
 ## Functionality
 The app's functionality includes:
@@ -106,6 +106,19 @@ The app's functionality includes:
 * Front-End: HTML5, CSS3, JavaScript ES6, React
 * Back-End: Node.js, Express.js, Mocha, Chai, RESTful API Endpoints, Postgress
 * Development Environment: Heroku
+
+## API Documentation
+This API services the Fly Smart React client application and comprises an Express server coupled with a PostgreSQL database. The database stores user information from the Fly Smart client. This server has authentication endpoints for creating an account, logging in and access user notes data such as packing list entries and checklist. Passwords are securely hashed and stored and authentication is handled using JWT.
+
+A typical request pattern looks like this:
+
+- A user visits the Fly Smart client application, creates an account and makes a POST request to store their username, email and hashed password in the database.
+- A user logs in by submitting a POST request to the login endpoint. Their hashed password is compared to the database and if valid, a token is returned to the client.
+- As users interact with the app, they make repeated POST and GET PATCH DELETE requests to the protected endpoints: 
+GET /api/checklist, PATCH /api/checklist
+GET /api/notes,  POST /api/notes/:note.id, DELETE /api/notes/:note.id
+GET api/users POST api/users
+Requests are validated, responses are sent accordingly and the user data is returned and rendered in the UI.
 
 ## Responsive
 App is built to be usable on mobile devices, as well as responsive across mobile, tablet, laptop, and desktop screen resolutions.
