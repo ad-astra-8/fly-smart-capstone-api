@@ -115,7 +115,7 @@ A typical request pattern looks like this:
 - A user visits the Fly Smart client application, creates an account and makes a POST request to store their username, email and hashed password in the database.
 - A user logs in by submitting a POST request to the login endpoint. Their hashed password is compared to the database and if valid, a token is returned to the client.
 - As users interact with the app, they make repeated POST and GET PATCH DELETE requests to the protected endpoints: 
-GET /api/checklist, PATCH /api/checklist
+GET /api/checklist
 GET /api/notes,  POST /api/notes/:note.id, DELETE /api/notes/:note.id
 GET api/users POST api/users
 Requests are validated, responses are sent accordingly and the user data is returned and rendered in the UI.

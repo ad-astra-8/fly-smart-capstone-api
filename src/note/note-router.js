@@ -51,15 +51,8 @@ noteRouter
     )
 
       .then(note => {
-        // res
-        //   .status(201)
-        //   .location(path.posix.join(req.originalUrl, `/${note_id}`))
-        //   .json(serializeNote(note))
         const notePath = path.posix.join(req.originalUrl, `/${note.id}`);
         const serializedNote = serializeNote(note);
-        console.log(notePath);
-        console.log(JSON.stringify(serializedNote));
-
         res
         .status(201)
         .location(notePath)
@@ -80,13 +73,11 @@ noteRouter
         error: { message: `Invalid id ${req.params.note_id}` }
       })
     }
-    // console.log("BEFORE GET NOTE BY ID");
     NoteService.getNoteById(
       req.app.get('db'),
       req.params.note_id
     )
       .then(note => {
-        // console.log("NOTE FOUND");
         if (!note) {
           return res.status(404).json({
             error: { message: `Note doesn't exist` }
@@ -95,7 +86,6 @@ noteRouter
         res.note = note
         next()
       })
-      // .catch(err => console.log(err))
       .catch(next)
   })
 
@@ -116,27 +106,5 @@ noteRouter
       })
       .catch(next)
   })
-// .patch(jsonParser, (req, res, next) => {
-//   const { note, completed } = req.body
-//   const noteToUpdate = { note, completed }
-
-//   const numberOfValues = Object.values(noteToUpdate).filter(Boolean).length
-//   if (numberOfValues === 0)
-//     return res.status(400).json({
-//       error: {
-//         message: `Request body must content either 'note' or 'completed'`
-//       }
-//     })
-
-//   NoteService.updateNote(
-//     req.app.get('db'),
-//     req.params.id,
-//     noteToUpdate
-//   )
-//     .then(updatedNote => {
-//       res.status(200).json(serializeNote(updatedNote[0]))
-//     })
-//     .catch(next)
-// })
 
 module.exports = noteRouter

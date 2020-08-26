@@ -86,8 +86,6 @@ checklistRouter
   .patch(jsonParser, (req, res, next) => {
     const { id, item, completed } = req.body
     const checklistToUpdate = { id, item, completed }
-    console.log(completed);
-    // const numberOfValues = Object.values(checklistToUpdate).filter(Boolean).length
     if (completed === undefined && item === undefined)
       return res.status(400).json({
         error: {
