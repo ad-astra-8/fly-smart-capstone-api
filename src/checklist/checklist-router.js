@@ -13,6 +13,7 @@ const serializeChecklist = item => ({
   completed: item.completed
 })
 
+
 checklistRouter
 .route('/')
 .get((req, res, next)=>{
