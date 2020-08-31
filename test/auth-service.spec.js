@@ -2,18 +2,19 @@ const AuthService = require('../src/auth/auth-service');
 const knex = require('knex')
 const supertest = require('supertest');
 const app = require('../src/app');
+const config = require("../src/config");
 
 describe('Auth Endpoints', function() {
     let db;
     let testUser = [
         {
             id: 1,
-            username: 'user@ymail.com',
+            email: 'user@ymail.com',
             password: 'Password1',
         },
         {  
             id: 2,
-            username: 'logger@gmail.com',
+            email: 'logger@gmail.com',
             password: 'Password2'
         }
     ]
@@ -21,7 +22,7 @@ describe('Auth Endpoints', function() {
     before('make knex instance', () => {
       db = knex({
         client: 'pg',
-        connection: process.env.TEST_DATABASE_URL,
+        connection: config.TEST_DATABASE_URL,
       });
       app.set('db', db);
     });
@@ -43,7 +44,7 @@ describe('Auth Endpoints', function() {
         .then(actual => {
         expect(actual).to.eql({
             id: 1,
-            username: 'user@ymail.com',
+            email: 'user@ymail.com',
             password: 'Password1',
               })
             })

@@ -1,46 +1,28 @@
 const knex = require('knex');
 const app = require('../src/app');
+const config = require("../src/config");
+
 
 function makeNoteArray() {
 	return [
 		{
 			id: 1,
-			name: 'Dogs',
-			id_folder: 1,
-			content: 'Note 1',
-			modified: '2029-01-22T16:28:32.615Z'
+			note: 'Note one',
+			completed: 1
 		},
 		{
 			id: 2,
-			name: 'Cats',
-			id_folder: 1,
-			content: 'Note 2',
-			modified: '2100-05-23T04:28:32.615Z'
+			note: 'Note two',
+			completed: 0
 		}
 	];
 }
 
-function makeFolderArray() {
-	return [
-		{
-			id: 1,
-			name: 'Important'
-		},
-		{
-			id: 2,
-			name: 'Super'
-		},
-		{
-			id: 3,
-			name: 'Spangley'
-		}
-	];
-}
 
 function makeMaliciousNote() {
 	const maliciousNote = {
 		id: 911,
-		name: 'MaliciousNote',
+		note: 'MaliciousNote',
 		id_folder: 1,
 		content: 'Naughty naughty very naughty <script>alert("xss");</script>'
 	};
@@ -66,7 +48,7 @@ describe('fly-smart-capstone API - notes', function () {
 		before('make knex instance', () => {
 			db = knex({
 				client: 'pg',
-				connection: process.env.TEST_DATABASE_URL
+				connection: config.TEST_DATABASE_URL
 			});
 			app.set('db', db);
 		});
@@ -74,11 +56,11 @@ describe('fly-smart-capstone API - notes', function () {
 		after('disconnect from db', () => db.destroy());
 
 		before('clean the table', () =>
-			db.raw('TRUNCATE note, notes RESTART IDENTITY CASCADE')
+			db.raw('TRUNCATE notes RESTART IDENTITY CASCADE')
 		);
 
 		afterEach('cleanup', () =>
-			db.raw('TRUNCATE note, notes RESTART IDENTITY CASCADE')
+			db.raw('TRUNCATE notes RESTART IDENTITY CASCADE')
 		);
 
 		describe(`GET /api/notes`, () => {
@@ -94,13 +76,8 @@ describe('fly-smart-capstone API - notes', function () {
 			context('Given there are notes in the database', () => {
 				const testNote = makeNoteArray();
 
-				beforeEach('insert note', () => {
-					return db
-						.into('notes')
-						.insert(testFolder)
-						.then(() => {
-							return db.into('note').insert(testNote);
-						});
+				beforeEach('insert notes', () => {
+							return db.into('notes').insert(testNote);
 				});
 
 				it('responds with 200 and all of the notes', () => {
@@ -108,37 +85,10 @@ describe('fly-smart-capstone API - notes', function () {
 						.get('/api/notes')
 						.set('Authorization', `Bearer ${process.env.API_TOKEN}`)
 						.expect(res => {
-							expect(res.body[0].name).to.eql(testNote[0].name);
+							expect(res.body[0].note).to.eql(testNote[0].note);
 							expect(res.body[0]).to.have.property('id');
 						});
 
-				});
-			});
-
-
-
-			context(`Given an XSS attack note`, () => {
-				const testFolder = makeFolderArray();
-				const { maliciousNote, expectedNote } = makeMaliciousNote();
-
-				beforeEach('insert malicious note', () => {
-					return db
-						.into('notes')
-						.insert(testFolder)
-						.then(() => {
-							return db.into('note').insert([maliciousNote]);
-						});
-				});
-
-				it('removes XSS attack note name or content', () => {
-					return supertest(app)
-						.get(`/api/notes`)
-						.set('Authorization', `Bearer ${process.env.API_TOKEN}`)
-						.expect(200)
-						.expect(res => {
-							expect(res.body[0].name).to.eql(expectedNote.name);
-							expect(res.body[0].content).to.eql(expectedNote.content);
-						});
 				});
 			});
 
@@ -150,19 +100,17 @@ describe('fly-smart-capstone API - notes', function () {
 			  it(`responds with 404`, () => {
 				const noteId = 123456
 				return supertest(app)
-				  .delete(`/api/notes/${note.id}`)
-				  .expect(404, { error: { message: `Article doesn't exist` } })
+				  .delete(`/api/notes/${noteId}`)
+				  .expect(404, { error: { message: `Note doesn't exist` } })
 			  })
 			})
 		
 			context('Given there are notes in the database', () => {
-				// const testUsers = makeUsersArray();
 				const testNotes = makeNoteArray()
 		
 			  beforeEach('insert notes', () => {
 				return db
 				  .into('notes')
-				  .insert(testUsers)
 				  .then(() => {
 					return db
 					  .into('notes')
@@ -170,9 +118,9 @@ describe('fly-smart-capstone API - notes', function () {
 				  })
 			  })
 		
-			  it('responds with 204 and removes the note', () => {
+			  it('responds with 204 and removes the notes', () => {
 				const idToRemove = 2
-				const expectedNotes = testNotes.filter(note => note.id !== idToRemove)
+				const expectedNotes = testNotes.filter( notes => notes.id !== idToRemove)
 				return supertest(app)
 				  .delete(`/api/notes/${idToRemove}`)
 				  .expect(204)
